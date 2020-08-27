@@ -1,0 +1,34 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<hudson.model.UserIdMapper>
+  <version>1</version>
+  <idToDirectoryNameMap class="concurrent-hash-map">
+    <entry>
+      <string>aletheahdlab</string>
+      <string>aletheahdlab_8615617512336113516</string>
+    </entry>
+    <entry>
+      <string>bhupesh</string>
+      <string>bhupesh_6687373586098580801</string>
+    </entry>
+    <entry>
+      <string>alethea</string>
+      <string>alethea_7104031630074358443</string>
+    </entry>
+    <entry>
+      <string>abhishek</string>
+      <string>abhishek_3720680746092801114</string>
+    </entry>
+    <entry>
+      <string>veena</string>
+      <string>veena_7632531220105454434</string>
+    </entry>
+    <entry>
+      <string>sriveena</string>
+      <string>sriveena_4451918458348648676</string>
+    </entry>
+    <entry>
+      <string>kasi</string>
+      <string>kasi_3883768631282516783</string>
+    </entry>
+  </idToDirectoryNameMap>
+</hudson.model.UserIdMapper>

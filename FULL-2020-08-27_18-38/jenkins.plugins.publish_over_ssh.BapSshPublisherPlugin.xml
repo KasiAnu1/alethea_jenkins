@@ -1,0 +1,130 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin_-Descriptor plugin="publish-over-ssh@1.20.1">
+  <hostConfigurations>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>alelap21</name>
+      <hostname>172.16.10.172</hostname>
+      <username>alethea</username>
+      <secretPassword>{AQAAABAAAAAQ8qWJ78QJ2hRuBqwDQrjQlIFqCDzQNXnJndLht9gJI2A=}</secretPassword>
+      <remoteRootDir></remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration">
+        <secretPassphrase>{AQAAABAAAACAlMR8YxGlCWnbkmj1WESjcZS4Pfvo+Hb3om80fZkseu6k/z5thzrDNNIaetSUldfQQrHBcuQ1XZT4KjWfGmLNtxCjMfbQD9a8nQdf/ifQ574okr8BDU7fuqY6zs3zzJmebv/nPo6CWiZxCzbAeZ9R88oPSy+eA5mASVfyFOg8VfK45SMNjW2RO1pEjixzD13S}</secretPassphrase>
+        <key>-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAv9l3hk/uqfMv56/3d5x6KRJq3Im33N6wEYHJFA87W1yJ41t/
+p+0aPHPJWxH5JnZmEC/CoHKlKTjLjAO4v9pCbd1/LUHoEdRujzRBtHozFEMnioZD
+zOAGUjVywYh6c3kizadWkR7C+AmlIDJPsyy7V9VjKOWm1dRZBAx7V6JGlDvF2jIe
+Yddv6kqElyPP6eUMXN3i+CIDOeUeyV7mSbBEJNPnln7BWhIsu6l6eqqf5RyKCTKw
+feZQffF20jTWnL3o/dgwGXnj07qjIXHqWpNUHl9VT7x1bZlkTuS9rFEndGVQvx7D
+8hiHw/YJMlOxBe847KLlBp1+WxTpZS1UErZ1qQIDAQABAoIBAQCNikSrfAdprThX
+p7Rcs75Q1PywDo7uzgB6OhV+zioNon08lwHcg4pKtWYF4YG+xbVRFdtygoKlofhS
+KWDBcqZ15edxHWG43dBfqL8dBtbuiQkAI0ScP1+KgVJTxHwK+4EY1u+AC4DufDcu
+RNAWMddZ2t3Yi24F7i9qVEcfhWKq8xJSsiDWoJF2WuMod4SuHOhxJhF6v9pGwV0/
+CVX5U513rugUwZGpBHPl2j3GU2z5uoLGrA4bxaKKV2boQjDzn6O59nwLi3vPYbpW
+ZDxDEqXAnTWqthtC3Zq2E6wHf498TjOv6SKXYFtHosmXCDtsrUgL3Zc9suK6yJBh
+PYE2ujYtAoGBAPBvyuTFWE3f5s4CqPBaub4i4W7iYvYcs2rnmyFXpZ1xmFSM60XJ
+d0/vfEwypHBMBoGuO9dYJaTwkyF911ChdsF5yfBOSYKg9I0a3/yxOdmXFT9CSmCl
+ghwTpka12x/GAOHXkDA+D4mzmJ5I+4WviuJ/8eAvcrFYGDo2z97s1RL/AoGBAMxE
+jLPrEmWfGPjAD8n0MU/gzQluYFy3IxQ0aR1mLQe7pNUkeX/yGXJWS+GFtJQSt3qM
+dDRpZIgUEw2a7RirfYByQmP6Gg5CRggsn+yCziFrL48CKfwKPhrB9Uw+r+Ubq2hY
+CWYZF//LmRuhgLEd9UuJvrXRGqvQ8NbhlUl0n/9XAoGABV/qYCzNKYh8x1Ql5KGS
+j16GPY1P+wJvPE+LFza3XAqjBhjUVY4IXcATvjxPkrcQWivD6K9uv/4ku9XtTz8c
+wXxweC+30vS4IsNcCHEJwwRulChuMzTf8LK7v87m5BHwCRxhe8KXZFOgcMFe5gEj
+kKadiI5m+PHoMLzy7p/Kr48CgYBwjuF9ju4vQzEOeT76CO5XVseFB+ZfkKbqzkqR
+4ai0lyioLpYo864j+/uKRRQReBLUm6q46s5z0aQCHjnCG1Vnvw5oavuKmehfPr/N
+IvMVJSwqwIWEFdzM/838epqQQ+P69nAPa4p28KjoueDhOGHfgwKsy5HH1bWwotOR
+i4tStwKBgQCt5c3Y8XDY09XkaBvKPbL7f6yPWkBIYSfK5mtEhevm/OObe9fRdgbX
+5ervGen5RROZ6e/eYZbYu42kU9xLJdl9LFnuxHXMLNPe1h6HYdu7oj2r+O7bK45u
+RbgZGsZ1LyTTfSBEHotCcVnNuKKthDLX856T+DFvnnHT0iAcXQW1BQ==
+-----END RSA PRIVATE KEY-----</key>
+        <keyPath></keyPath>
+        <disableAllExec>false</disableAllExec>
+      </commonConfig>
+      <timeout>300000</timeout>
+      <overrideKey>false</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>{AQAAABAAAACAbXwGVEXDjItr6sC2S4t+3fg2BMwOXvvnPSZJczEE+gvn3hynV3u6R+lMzmgevsu3X8YAYdtp8UWo/FdirvFx6dfbAhRcEKqqnRsAiSi3UT61zc8sVntMby06dWyfM6G/w3072S+qq7lR+nS1ETGHM0JX1kZycSun6SxN6HLBCtPspKugf54KZ7zFhcZmBOFe}</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+      <jumpHost></jumpHost>
+      <proxyType></proxyType>
+      <proxyHost></proxyHost>
+      <proxyPort>0</proxyPort>
+      <proxyUser></proxyUser>
+      <proxyPassword></proxyPassword>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>MAC</name>
+      <hostname>172.16.10.146</hostname>
+      <username>aletheacommunications</username>
+      <secretPassword>{AQAAABAAAAAQqDcfca6VYc8XQAMd1XkQmMAGBvNNzo7/3JHX+V6N5yI=}</secretPassword>
+      <remoteRootDir></remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>3000000</timeout>
+      <overrideKey>false</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>{AQAAABAAAABARvI6ywCt9smnDJUW0G5Ea5+p+TMSZM/jYUcCM6t1DXaG1yQcRWl7cuNEXEljqt5Qj0ip4tDhsKw7pFVxsJGBiitiSgw+KDHlQiAsST9jwZ0=}</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+      <jumpHost></jumpHost>
+      <proxyType></proxyType>
+      <proxyHost></proxyHost>
+      <proxyPort>0</proxyPort>
+      <proxyUser></proxyUser>
+      <proxyPassword>alethea123</proxyPassword>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>windows</name>
+      <hostname>172.16.10.191</hostname>
+      <username>win10</username>
+      <secretPassword>{AQAAABAAAAAQEFfg44vTUFmWpV3mYhN7GLQFQj4ZD2Rbhhao6OR4dxo=}</secretPassword>
+      <remoteRootDir></remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>300000</timeout>
+      <overrideKey>false</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>{AQAAABAAAABASblG4gWi+NjfnH4ajO2YWz5pZLvdgo22Z7nRH8q5EsyHcqxVrfTu/dPyeNu15pKvIgCyTYagcAbEbEA3opyL42A/L1Mi/XELaXlPxPHpcJ4=}</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+      <jumpHost></jumpHost>
+      <proxyType></proxyType>
+      <proxyHost></proxyHost>
+      <proxyPort>0</proxyPort>
+      <proxyUser></proxyUser>
+      <proxyPassword></proxyPassword>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>alelap98</name>
+      <hostname>172.16.10.151</hostname>
+      <username>alethea</username>
+      <secretPassword>{AQAAABAAAAAQzJn93xXxc+BCxSxFmES+6rHAjW0Y7R8QH8qU4pYGlvM=}</secretPassword>
+      <remoteRootDir></remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>300000</timeout>
+      <overrideKey>false</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>{AQAAABAAAAAQ3LwPjuNsvGNOLcz1F7LmTm2jLsdipCcxnckeFCzuqGk=}</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+      <jumpHost></jumpHost>
+      <proxyType></proxyType>
+      <proxyHost></proxyHost>
+      <proxyPort>0</proxyPort>
+      <proxyUser></proxyUser>
+      <proxyPassword></proxyPassword>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+  </hostConfigurations>
+  <commonConfig reference="../hostConfigurations/jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+  <defaults class="jenkins.plugins.publish_over_ssh.options.SshPluginDefaults"/>
+</jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin_-Descriptor>

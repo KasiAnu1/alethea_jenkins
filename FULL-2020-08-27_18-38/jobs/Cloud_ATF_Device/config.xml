@@ -1,0 +1,143 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Cloud_ATF_Device</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.13">
+      <gitLabConnection>IoTMonitoringSolution</gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>Branch</name>
+          <description>Branch</description>
+          <defaultValue>v4.7</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>Env</name>
+          <description>Env</description>
+          <defaultValue>prod</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>tag_name</name>
+          <description>tag_name</description>
+          <defaultValue>v4.7.0</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>Comm_Latency</name>
+          <description>Comm_Latency</description>
+          <defaultValue>40</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.2.2">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>http://10.10.10.2/IoTMonitoringSolution/CloudATFDevice.git</url>
+        <credentialsId>gitlab_user1</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers>
+    <hudson.triggers.SCMTrigger>
+      <spec></spec>
+      <ignorePostCommitHooks>false</ignorePostCommitHooks>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <customWorkspace>Cloud_ATF_Device</customWorkspace>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>if [ $Env = dev ]; then
+    git branch -a
+    git checkout origin/$Branch
+    git branch
+    git status
+    node -v
+    npm -v
+    echo &quot;Installing npm packages...&quot;
+    npm install
+    echo &quot;Adding electron platform...&quot;
+    ionic cordova platform add electron --save
+    echo &quot;Building Dev environment&quot;
+    npm run build-dev
+    echo &quot;Deleting build folder&quot;
+    rm -rf platforms/electron/build/
+    npm run electron-pack-linux
+    cd platforms/electron/packager_build/
+    zip -r Device-linux-x64.zip Device-linux-x64
+    mv Device-linux-x64.zip Device-linux-$Branch_name.zip
+    
+elif [ $Env = prod ]; then
+
+    git branch -a
+    git checkout origin/$Branch
+    git branch
+    git status
+    sed -i -e &apos;/devTools/s/true/false/&apos; main.js
+	sed -i -e &apos;/mainWindow.webContents.openDevTools();/d&apos; main.js
+	sed -i -e &quot;s/30/$Comm_Latency/g&quot; src/environments/environment.prod.ts
+	sed -i -e &quot;s/30/$Comm_Latency/g&quot; src/environments/environment.ts
+	node -v
+    npm -v
+    echo $Comm_Latency
+	echo &quot;Installing npm packages...&quot;
+	npm install
+	echo &quot;Adding electron platform...&quot;
+	ionic cordova platform add electron --save
+	echo &quot;Building Production environment&quot;
+	npm run build-prod
+	echo &quot;Deleting build folder&quot;
+	rm -rf platforms/electron/build/
+	npm run electron-pack-linux
+	cd platforms/electron/packager_build/Device-linux-x64/resources/app
+	rm -rf t* src/ plugins/ platforms/ package-lock.json main.js-e karma.conf.js ionic.config.json e2e/ config.xml browserslist angular.json README.md Edit_version.py
+	cd ../../..
+	zip -r Device-linux-$tag_name.zip Device-linux-x64
+    
+fi</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.plugins.git.GitPublisher plugin="git@4.2.2">
+      <configVersion>2</configVersion>
+      <pushMerge>false</pushMerge>
+      <pushOnlyIfSuccess>false</pushOnlyIfSuccess>
+      <forcePush>false</forcePush>
+      <tagsToPush>
+        <hudson.plugins.git.GitPublisher_-TagToPush>
+          <targetRepoName>origin</targetRepoName>
+          <tagName>$tag_name</tagName>
+          <tagMessage>$tag_name created from jenkins</tagMessage>
+          <createTag>true</createTag>
+          <updateTag>true</updateTag>
+        </hudson.plugins.git.GitPublisher_-TagToPush>
+      </tagsToPush>
+    </hudson.plugins.git.GitPublisher>
+  </publishers>
+  <buildWrappers>
+    <jenkins.plugins.nodejs.NodeJSBuildWrapper plugin="nodejs@1.3.5">
+      <nodeJSInstallationName>ATF_Device</nodeJSInstallationName>
+      <cacheLocationStrategy class="jenkins.plugins.nodejs.cache.DefaultCacheLocationLocator"/>
+    </jenkins.plugins.nodejs.NodeJSBuildWrapper>
+  </buildWrappers>
+</project>

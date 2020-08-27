@@ -1,0 +1,75 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Anchor_Docker</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.13">
+      <gitLabConnection>IoTMonitoringSolution</gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>Branch</name>
+          <description>Branch</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>tag_name</name>
+          <description>tag_name</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <customWorkspace>Cloud_ATF_Docker</customWorkspace>
+  <builders>
+    <com.nirima.jenkins.plugins.docker.builder.DockerBuilderPublisher plugin="docker-plugin@1.2.0">
+      <dockerFileDirectory>/var/lib/jenkins/Cloud_ATF_Docker/Anchor_Docker</dockerFileDirectory>
+      <fromRegistry plugin="docker-commons@1.16"/>
+      <tags>
+        <string>atf_anchor:setup</string>
+      </tags>
+      <pushOnSuccess>false</pushOnSuccess>
+      <pushCredentialsId></pushCredentialsId>
+      <cleanImages>false</cleanImages>
+      <cleanupWithJenkinsJobDelete>false</cleanupWithJenkinsJobDelete>
+      <cloud>docker</cloud>
+      <noCache>false</noCache>
+      <pull>false</pull>
+    </com.nirima.jenkins.plugins.docker.builder.DockerBuilderPublisher>
+    <hudson.tasks.Shell>
+      <command>cd /var/lib/jenkins/Cloud_ATF_Docker/Anchor_Docker
+docker save -o atf_anchor.tar atf_anchor:setup
+chmod -R 777 atf_anchor.tar
+cp -pr atf_anchor.tar ../Anchor_Upgrade/installation
+cd ../Anchor_Upgrade
+chmod -R 777 installation
+
+if [ -d /var/tmp/releases/Anchor/$tag_name ]; then
+cp -r installation /var/tmp/releases/Anchor/$tag_name/
+cd /var/tmp/releases/Anchor/$tag_name/
+zip -r installation.zip installation
+rm -rf installation
+else
+mkdir -p /var/tmp/releases/Anchor/$tag_name
+cp -r installation /var/tmp/releases/Anchor/$tag_name/
+cd /var/tmp/releases/Anchor/$tag_name/
+zip -r installation.zip installation
+rm -rf installation
+fi
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

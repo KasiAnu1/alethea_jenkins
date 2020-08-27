@@ -1,0 +1,168 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>Cloud_EP_Docker</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.13">
+      <gitLabConnection>IoTMonitoringSolution</gitLabConnection>
+    </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>Box_type</name>
+          <description>Box_type</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>Branch</name>
+          <description>Branch</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>release</name>
+          <description>release for both ATF and EP upgrades
+EP for EP upgrade</description>
+          <defaultValue>release</defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>tag_name</name>
+          <description>tag_name</description>
+          <defaultValue></defaultValue>
+          <trim>false</trim>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <customWorkspace>Cloud_ATF_Docker</customWorkspace>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>if [ $Box_type = single ]; then
+
+	cd /var/lib/jenkins/Cloud_ATF_Docker/EP_Docker
+	echo &quot;Commands to build, run and save EP docker image:&quot;
+	sed -i -e &apos;/RUN apt-get -y install software-properties-common/d&apos; Dockerfile
+	sed -i -e &apos;/RUN apt-add-repository ppa:/d&apos; Dockerfile
+	sed -i -e &apos;/RUN apt-get -y install mosquitto/d&apos; Dockerfile
+    echo &quot;Updating EP_Service_For and Gateway_Communication_Subnet_IP of EP image&quot;
+	sed -i -e &apos;s/&apos;192.168.200.10&apos;/&apos;127.0.0.1&apos;/g&apos; Dockerfile
+    sed -i -e &apos;s/&apos;wicheck&apos;/&apos;ATF&apos;/g&apos; Dockerfile
+	sed -i -e &apos;/mosquitto/d&apos; run.sh
+    
+    cd /var/lib/jenkins/Cloud_ATF_Docker/ATF_Docker
+	echo &quot;Updating TCP_SERVER_HOST_URL and TCP_SERVER_URL of ATF Dockerfile:&quot;
+	sed -i -e &apos;s/&apos;192.168.217.1&apos;/&apos;127.0.0.1&apos;/g&apos; Dockerfile
+   
+fi
+
+cd /var/lib/jenkins/Cloud_ATF_Docker/ATF_Docker
+echo &quot;Updating ATF_VERSION of ATF Dockerfile:&quot;
+sed -i -e &apos;s/version_no/&apos;&quot;$tag_name&quot;&apos;/g&apos; Dockerfile</command>
+    </hudson.tasks.Shell>
+    <com.nirima.jenkins.plugins.docker.builder.DockerBuilderPublisher plugin="docker-plugin@1.2.0">
+      <dockerFileDirectory>/var/lib/jenkins/Cloud_ATF_Docker/EP_Docker</dockerFileDirectory>
+      <fromRegistry plugin="docker-commons@1.16"/>
+      <tags>
+        <string>atf_ep:setup</string>
+      </tags>
+      <pushOnSuccess>false</pushOnSuccess>
+      <pushCredentialsId></pushCredentialsId>
+      <cleanImages>false</cleanImages>
+      <cleanupWithJenkinsJobDelete>false</cleanupWithJenkinsJobDelete>
+      <cloud>docker</cloud>
+      <noCache>true</noCache>
+      <pull>false</pull>
+    </com.nirima.jenkins.plugins.docker.builder.DockerBuilderPublisher>
+    <hudson.tasks.Shell>
+      <command>if [ $Box_type = single ]; then
+
+    cd /var/lib/jenkins/Cloud_ATF_Docker/EP_Docker
+	echo &quot;Commands to build, run and save EP docker image:&quot;
+	docker save -o atf_ep.tar atf_ep:setup
+	chmod -R 777 atf_ep.tar
+	cp -pr atf_ep.tar ../ATF_Upgrade/wicheck/installation
+    cd ../ATF_Upgrade/wicheck/installation
+
+	if [ $release = release ]; then
+
+      cd /var/lib/jenkins/Cloud_ATF_Docker/ATF_Upgrade/wicheck/installation
+      cp  wicheck_install_singleBox.sh  wicheck_install.sh
+      cd ../..
+      #zip -r -P WiCheckLogs wicheck.zip wicheck
+    
+        if [ -d /var/tmp/releases/single/release/$tag_name/ ]; then
+          cp -r /var/lib/jenkins/Cloud_ATF_Docker/ATF_Upgrade/wicheck /var/tmp/releases/single/release/$tag_name/
+          cd /var/tmp/releases/single/release/$tag_name/
+          zip -r -P WiCheckLogs wicheck.zip wicheck
+          rm -rf wicheck
+        else
+          mkdir -p /var/tmp/releases/single/release/$tag_name
+          cp -r /var/lib/jenkins/Cloud_ATF_Docker/ATF_Upgrade/wicheck /var/tmp/releases/single/release/$tag_name/
+          cd /var/tmp/releases/single/release/$tag_name/
+          zip -r -P WiCheckLogs wicheck.zip wicheck
+          rm -rf wicheck
+        fi
+    
+    elif [ $release = EP ]; then
+    
+      cd /var/lib/jenkins/Cloud_ATF_Docker/ATF_Upgrade/wicheck/installation
+      cp  wicheck_install_EP.sh  wicheck_install.sh
+      if [ $( ls atf_services.tar ) ]; then rm -rf atf_services.tar; fi
+      cd ../..
+      
+      #zip -r -P WiCheckLogs wicheck.zip wicheck
+    
+        if [ -d /var/tmp/releases/single/EP_upgrade/$tag_name/ ]; then
+       	  
+          cp -r /var/lib/jenkins/Cloud_ATF_Docker/ATF_Upgrade/wicheck /var/tmp/releases/single/EP_upgrade/$tag_name/
+          cd /var/tmp/releases/single/EP_upgrade/$tag_name/
+          zip -r -P WiCheckLogs wicheck.zip wicheck
+          rm -rf wicheck
+          
+        else
+          mkdir -p /var/tmp/releases/single/EP_upgrade/$tag_name
+          cp -r /var/lib/jenkins/Cloud_ATF_Docker/ATF_Upgrade/wicheck /var/tmp/releases/single/EP_upgrade/$tag_name/
+          cd /var/tmp/releases/single/EP_upgrade/$tag_name/
+          zip -r -P WiCheckLogs wicheck.zip wicheck
+          rm -rf wicheck
+          
+        fi
+    
+    fi
+    
+elif [ $Box_type = dual ]; then
+
+	cd /var/lib/jenkins/Cloud_ATF_Docker/EP_Docker
+	docker save -o atf_ep.tar atf_ep:setup
+	chmod -R 777 atf_ep.tar
+	cp -pr atf_ep.tar ../EP_Upgrade/wicheck/endpoint_upgrade
+	cd ../EP_Upgrade
+	#zip -r -P WiCheckLogs wicheck.zip wicheck
+      if [ -d /var/tmp/releases/dual/EP/$tag_name/ ]; then
+      	cp -r /var/lib/jenkins/Cloud_ATF_Docker/EP_Upgrade/wicheck /var/tmp/releases/dual/EP/$tag_name/
+        cd /var/tmp/releases/dual/EP/$tag_name/
+        zip -r -P WiCheckLogs wicheck.zip wicheck
+        rm -rf wicheck
+      else    
+      	mkdir -p /var/tmp/releases/dual/EP/$tag_name
+      	cp -r /var/lib/jenkins/Cloud_ATF_Docker/EP_Upgrade/wicheck /var/tmp/releases/dual/EP/$tag_name/
+        cd /var/tmp/releases/dual/EP/$tag_name/
+        zip -r -P WiCheckLogs wicheck.zip wicheck
+        rm -rf wicheck
+      fi
+fi</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
